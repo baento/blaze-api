@@ -1,0 +1,3 @@
+jwt:
+  validity: 1d
+  secret: 2NIkY0aa/4JwyT0EXtJCTs2+4hfmSPkY8OFKiIHxGUI=

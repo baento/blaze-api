@@ -1,0 +1,206 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Calendar API",
+        "version": "1.0",
+        "description": "This API exposes routes to get one's calendar.",
+        "contact": {
+            "name": "Antoine Balieu",
+            "url": "https://banto.me/",
+            "email": "antoine.balieu@etu.uphf.fr"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000"
+        }
+    ],
+    "paths": {
+        "/calendars/user/{userId}": {
+            "parameters": [
+                {
+                    "schema": {
+                        "type": "string"
+                    },
+                    "name": "userId",
+                    "in": "path",
+                    "required": true
+                }
+            ],
+            "get": {
+                "summary": "Get user's calendar by ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Activity"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "404": {
+                        "description": "The user does not exist"
+                    }
+                },
+                "operationId": "get-calendar-user",
+                "description": "Retrieves a user's calendar",
+                "parameters": [],
+                "tags": [
+                    "Users"
+                ]
+            }
+        },
+        "/calendars/group/{groupId}": {
+            "parameters": [
+                {
+                    "schema": {
+                        "type": "string"
+                    },
+                    "name": "groupId",
+                    "in": "path",
+                    "required": true
+                }
+            ],
+            "get": {
+                "summary": "Get group's calendar by ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                }
+                            }
+                        },
+                        "headers": {}
+                    }
+                },
+                "operationId": "get-calendar-group",
+                "description": "Retrieves a group's calendar",
+                "tags": [
+                    "Groups"
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Activity": {
+                "title": "Activity",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "published": {
+                        "type": "boolean"
+                    },
+                    "startDate": {
+                        "type": "string"
+                    },
+                    "endDate": {
+                        "type": "string"
+                    },
+                    "creationDate": {
+                        "type": "string"
+                    },
+                    "updateDate": {
+                        "type": "string"
+                    },
+                    "deletionDate": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id"
+                ],
+                "description": ""
+            }
+        },
+        "securitySchemes": {
+            "Token": {
+                "name": "token",
+                "type": "apiKey",
+                "in": "query"
+            },
+            "API-Key": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        },
+        "responses": {
+            "Unauthorized": {
+                "description": "The user is not allowed to perform the requested action",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "privileges": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
+                }
+            },
+            "Unauthenticated": {
+                "description": "The user is not logged in",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "loginUrl": {
+                                    "type": "string",
+                                    "format": "uri"
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Calendar"
+        },
+        {
+            "name": "Users"
+        },
+        {
+            "name": "Groups"
+        }
+    ]
+}
