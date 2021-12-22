@@ -1,4 +1,4 @@
-package fr.blaze.calendar.model;
+package fr.blaze.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Getter;
 
@@ -15,5 +17,6 @@ import lombok.Getter;
 public class Group extends Resource {
 
     @ManyToMany(mappedBy = "groups")
+    @JsonBackReference
     private Set<Student> students = new HashSet<>();
 }

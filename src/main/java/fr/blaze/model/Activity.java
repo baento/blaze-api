@@ -1,4 +1,4 @@
-package fr.blaze.calendar.model;
+package fr.blaze.model;
 
 import java.time.Duration;
 import java.util.Date;

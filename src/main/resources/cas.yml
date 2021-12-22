@@ -1,4 +1,0 @@
-cas:
-  loginEndpoint: /login
-  baseUrl: http://localhost:8080/cas
-  callbackUrl: http://localhost:8081

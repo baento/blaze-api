@@ -1,11 +1,11 @@
-package fr.blaze.calendar.repository;
+package fr.blaze.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import fr.blaze.calendar.model.Group;
+import fr.blaze.model.Group;
 
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Integer> {

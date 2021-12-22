@@ -1,4 +1,4 @@
-package fr.blaze.calendar.model;
+package fr.blaze.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +27,6 @@ public class Calendar extends Resource {
     @ManyToMany
     @JoinTable(inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"))
     private Set<Student> students_exceptions = new HashSet<>();
-
 
     public Set<Student> getStudents() {
         return SetUtils.difference(students, students_exceptions);

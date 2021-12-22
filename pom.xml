@@ -7,14 +7,14 @@
 		<version>2.6.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>fr.banto.blaze.calendar</groupId>
+	<groupId>fr.banto.blaze</groupId>
 	<artifactId>api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Calendar API</name>
 	<description>A calendar API for Blaze</description>
 	<properties>
 		<java.version>11</java.version>
-		<start-class>fr.banto.blaze.calendar.api.CalendarApplication</start-class>
+		<start-class>fr.banto.blaze.apiApplication</start-class>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -81,17 +81,6 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.2</version>
 			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.5.13</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-javadoc</artifactId>
-			<version>1.5.13</version>
 		</dependency>
 
 		<dependency>

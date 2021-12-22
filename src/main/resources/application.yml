@@ -1,11 +1,11 @@
 server:
   port: 8081
-  
+
 spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://localhost:3307/blaze
+    url: jdbc:mysql://localhost:3306/blaze
   jpa:
     generate-ddl: true
     properties:
@@ -20,10 +20,12 @@ spring:
   redis:
     host: 192.168.0.101
     port: 6379
-springdoc:
-  swagger-ui:
-    disable-swagger-default-url: true
-    use-root-path: true
-    path: /api-docs/index.html
-  api-docs:
-    path: /api-docs
+
+cas:
+  login-endpoint: /login
+  base-url: http://localhost:8080/cas
+  callback-url: http://localhost:8081
+
+jwt:
+  validity: 1d
+  secret: 2NIkY0aa/4JwyT0EXtJCTs2+4hfmSPkY8OFKiIHxGUI=

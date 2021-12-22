@@ -1,4 +1,4 @@
-package fr.blaze.calendar.model;
+package fr.blaze.model;
 
 import javax.persistence.Entity;
 
