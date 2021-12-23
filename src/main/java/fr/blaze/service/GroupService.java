@@ -8,4 +8,6 @@ public interface GroupService {
     public Group getGroup(int id);
 
     public Collection<Group> getAllGroups();
+
+    public Group saveGroup(Group group);
 }

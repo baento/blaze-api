@@ -11,13 +11,13 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @SuperBuilder
 @Entity

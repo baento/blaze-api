@@ -2,13 +2,13 @@ package fr.blaze.model;
 
 import javax.persistence.Entity;
 
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @SuperBuilder
 @Entity
