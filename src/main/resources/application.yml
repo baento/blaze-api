@@ -10,8 +10,8 @@ spring:
     generate-ddl: true
     properties:
       hibernate:
-        ddl-auto: create
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        ddl-auto: create-drop
+        dialect: org.hibernate.dialect.MySQL8Dialect
   cache:
     type: redis
     cache-names: resource
