@@ -43,7 +43,7 @@ public abstract class Resource {
     private LocalDateTime deletionDate;
 
     @JsonIgnore
-    public boolean isDeleted() {
-        return deletionDate != null && deletionDate.isBefore(LocalDateTime.now());
+    public boolean isActive() {
+        return deletionDate == null || deletionDate.isAfter(LocalDateTime.now());
     }
 }
