@@ -1,71 +1,101 @@
 package fr.blaze.config;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.jasig.cas.client.validation.Cas30ServiceTicketValidator;
-import org.jasig.cas.client.validation.TicketValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.cas.ServiceProperties;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.cas.authentication.CasAssertionAuthenticationToken;
+import org.springframework.security.cas.authentication.CasAuthenticationProvider;
+import org.springframework.security.cas.web.CasAuthenticationEntryPoint;
+import org.springframework.security.cas.web.CasAuthenticationFilter;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import fr.blaze.security.TokenFilterConfigurer;
+import fr.blaze.security.TokenGeneratorFilter;
 import fr.blaze.security.TokenProvider;
+import fr.blaze.service.impl.CustomUserDetailsService;
 
-@EnableWebSecurity
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private TokenProvider tokenProvider;
 
-    @Autowired
-    private CasProperties casProperties;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf()
-                .disable();
+        http.exceptionHandling()
+                .authenticationEntryPoint(casAuthenticationEntryPoint()).and()
+                .addFilterBefore(new TokenGeneratorFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(casAuthenticationFilter());
 
-        http.cors();
+        http.headers().frameOptions().disable();
 
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        http.apply(new TokenFilterConfigurer(tokenProvider));
+        http.authorizeRequests()
+                .antMatchers("/login/**").permitAll()
+                .antMatchers("/api/version").permitAll()
+                .anyRequest().authenticated();
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-                .anyRequest();
-                //.antMatchers("/login", "/login/validate")
-                //.antMatchers("/version");
-    }
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(casAuthenticationProvider());
+	}
 
     @Bean
-    public ServiceProperties serviceProperties() {
-        ServiceProperties serviceProperties = new ServiceProperties();
+	public Set<String> adminList() {
+		Set<String> admins = new HashSet<String>();
+		admins.add("admin");
+		return admins;
+	}
 
-        serviceProperties.setService(casProperties.getCallBackUrl() + "/login/validate");
-        serviceProperties.setSendRenew(false);
+	@Bean
+	public ServiceProperties serviceProperties() {
+		ServiceProperties serviceProperties = new ServiceProperties();
+		serviceProperties.setService("http://localhost:8081/login/cas");
+		serviceProperties.setSendRenew(false);
+		return serviceProperties;
+	}
 
-        return serviceProperties;
-    }
+	@Bean
+	public CasAuthenticationProvider casAuthenticationProvider() {
+		CasAuthenticationProvider casAuthenticationProvider = new CasAuthenticationProvider();
+		casAuthenticationProvider.setAuthenticationUserDetailsService(customUserDetailsService());
+		casAuthenticationProvider.setServiceProperties(serviceProperties());
+		casAuthenticationProvider.setTicketValidator(serviceTicketValidator());
+		casAuthenticationProvider.setKey("an_id_for_this_auth_provider_only");
+		return casAuthenticationProvider;
+	}
 
-    @Bean
-    public TicketValidator ticketValidator() {
-        return new Cas30ServiceTicketValidator(casProperties.getBaseUrl());
-    }
+	@Bean
+	public AuthenticationUserDetailsService<CasAssertionAuthenticationToken> customUserDetailsService() {
+		return new CustomUserDetailsService(adminList());
+	}
 
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return authenticationManager();
-    }
+	@Bean
+	public Cas30ServiceTicketValidator serviceTicketValidator() {
+		return new Cas30ServiceTicketValidator("http://localhost:8080/cas/");
+	}
+
+	@Bean
+	public CasAuthenticationFilter casAuthenticationFilter() throws Exception {
+		CasAuthenticationFilter casAuthenticationFilter = new CasAuthenticationFilter();
+		casAuthenticationFilter.setAuthenticationManager(authenticationManager());
+		return casAuthenticationFilter;
+	}
+
+	@Bean
+	public CasAuthenticationEntryPoint casAuthenticationEntryPoint() {
+		CasAuthenticationEntryPoint casAuthenticationEntryPoint = new CasAuthenticationEntryPoint();
+		casAuthenticationEntryPoint.setLoginUrl("http://localhost:8080/cas/login");
+		casAuthenticationEntryPoint.setServiceProperties(serviceProperties());
+		return casAuthenticationEntryPoint;
+	}
 }

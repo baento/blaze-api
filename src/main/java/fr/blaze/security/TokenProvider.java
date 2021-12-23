@@ -41,9 +41,6 @@ public class TokenProvider {
     public String createToken(String username) {
         UserDetails user = userDetailsService.loadUserByUsername(username);
 
-        if (user == null)
-            return null;
-
         Claims claims = Jwts.claims().setSubject(username);
 
         claims.put("auth", user.getAuthorities());
@@ -67,6 +64,7 @@ public class TokenProvider {
      * Par convention, on extrait la valeur de l'en-tête `Authorization`.
      */
     public String resolve(HttpServletRequest request) {
+
         String token = request.getHeader("Authorization");
 
         if (token == null || !token.startsWith("Bearer "))
@@ -86,8 +84,7 @@ public class TokenProvider {
                     .parseClaimsJws(token);
 
             return true;
-
-        } catch (JwtException e) {
+        } catch (Exception e) {
             return false;
         }
     }

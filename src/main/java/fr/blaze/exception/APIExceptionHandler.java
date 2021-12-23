@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -17,18 +18,25 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private ResponseEntity<Object> buildResponseEntity(APIException apiException) {
+    private ResponseEntity<Object> buildResponseEntity(APIError apiException) {
         return new ResponseEntity<>(apiException, apiException.getStatus());
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return buildResponseEntity(new APIException(HttpStatus.BAD_REQUEST, "Malformed JSON request", ex));
+        return buildResponseEntity(new APIError(HttpStatus.BAD_REQUEST, "Malformed JSON request", ex));
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    protected ResponseEntity<Object> handleNotAuthenticated(AuthenticationException ex) {
+        APIError apiException = new APIError(HttpStatus.UNAUTHORIZED);
+        apiException.setMessage(ex.getMessage());
+        return buildResponseEntity(apiException);
     }
     
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
-        APIException apiException = new APIException(HttpStatus.NOT_FOUND);
+        APIError apiException = new APIError(HttpStatus.NOT_FOUND);
         apiException.setMessage(ex.getMessage());
         return buildResponseEntity(apiException);
     }

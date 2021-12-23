@@ -1,6 +1,7 @@
 package fr.blaze.model;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,5 +14,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Entity
 public class User extends Resource {
+    @NotBlank
+    private String firstName;
 
+    @NotBlank
+    private String lastName;
 }

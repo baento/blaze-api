@@ -8,36 +8,36 @@ import org.springframework.http.HttpStatus;
 import lombok.Data;
 
 @Data
-public class APIException {
+public class APIError {
     private HttpStatus status;
     private LocalDateTime timestamp;
     private String message;
     private String debugMessage;
     private List<APISubException> subErrors;
  
-    public APIException() {
+    public APIError() {
         timestamp = LocalDateTime.now();
     }
  
-    public APIException(HttpStatus status) {
+    public APIError(HttpStatus status) {
         this();
         this.status = status;
     }
  
-    public APIException(HttpStatus status, Throwable ex) {
+    public APIError(HttpStatus status, Throwable ex) {
         this();
         this.status = status;
         this.message = "Unexpected error";
         this.debugMessage = ex.getLocalizedMessage();
     }
 
-    public APIException(HttpStatus status, String message) {
+    public APIError(HttpStatus status, String message) {
         this();
         this.status = status;
         this.message = message;
     }
  
-    public APIException(HttpStatus status, String message, Throwable ex) {
+    public APIError(HttpStatus status, String message, Throwable ex) {
         this();
         this.status = status;
         this.message = message;

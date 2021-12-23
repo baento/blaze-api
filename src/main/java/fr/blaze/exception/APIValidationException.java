@@ -1,6 +1,6 @@
 package fr.blaze.exception;
 
-import fr.blaze.exception.APIException.APISubException;
+import fr.blaze.exception.APIError.APISubException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
