@@ -1,12 +1,12 @@
 package fr.blaze.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -15,30 +15,35 @@ import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
+@Setter
+@NoArgsConstructor
+@SuperBuilder
 @MappedSuperclass
 public abstract class Resource {
     @Id
     @GeneratedValue
-    private Integer id;
-    
+    private final Integer id = 0;
+
     @NaturalId
+    @NotNull
+    @Column(unique = true, nullable = false)
     private String handle;
-    
+
     @CreationTimestamp
-    @Temporal(TemporalType.DATE)
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     @UpdateTimestamp
-    @Temporal(TemporalType.DATE)
-    private Date updateDate;
+    private LocalDateTime updateDate;
 
-    @Temporal(TemporalType.DATE)
-    private Date deletionDate;
+    private LocalDateTime deletionDate;
 
     @JsonIgnore
     public boolean isDeleted() {
-        return deletionDate != null && deletionDate.before(new Date());
+        return deletionDate != null && deletionDate.isBefore(LocalDateTime.now());
     }
 }

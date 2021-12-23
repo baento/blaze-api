@@ -7,8 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
+@Setter
+@NoArgsConstructor
+@SuperBuilder
 @Entity
 public class Activity extends Resource {
     private boolean published;
