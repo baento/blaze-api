@@ -2,6 +2,8 @@ package fr.blaze.service.impl;
 
 import java.util.Collection;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 
     @Override
     public Personnel getPersonnel(int id) {
-        return personnelRepository.findById(id).orElseThrow();
+        return personnelRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Personnel not found"));
     }
 
     @Override
