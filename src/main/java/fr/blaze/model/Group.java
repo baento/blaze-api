@@ -4,19 +4,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@Data
-@EqualsAndHashCode(callSuper = false)
+@Getter
+@Setter
 @NoArgsConstructor
 @SuperBuilder
 @Entity
@@ -24,7 +25,7 @@ import lombok.experimental.SuperBuilder;
 public class Group extends Resource {
 
     @Builder.Default
-    @ManyToMany(mappedBy = "groups")
-    @JsonBackReference
+    @ManyToMany(mappedBy = "groups", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("groups")
     private Set<Student> students = new HashSet<>();
 }

@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 public class TokenGeneratorFilter extends OncePerRequestFilter {
@@ -19,11 +20,11 @@ public class TokenGeneratorFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = request.getParameter("token");
+        String token = tokenProvider.resolve(request);
 
-        String currentToken = tokenProvider.resolve(request);
-        if (currentToken == null || !currentToken.equals(token)) {
-            response.addHeader("Token", token);
+        if (token == null || !tokenProvider.validate(token)) {
+            //SecurityContextHolder.clearContext();
+        } else {
         }
 
         filterChain.doFilter(request, response);
