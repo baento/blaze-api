@@ -12,12 +12,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor
 @SuperBuilder
 @Entity
 @Table(name = "`group`") // group is a reserved word in MySQL

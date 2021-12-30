@@ -15,11 +15,9 @@ import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@NoArgsConstructor
 @SuperBuilder
 @MappedSuperclass
 public abstract class Resource {
@@ -31,6 +29,8 @@ public abstract class Resource {
     @NotNull
     @Column(unique = true, nullable = false)
     private String handle;
+
+    private String comment;
 
     @CreationTimestamp
     private LocalDateTime creationDate;

@@ -18,7 +18,6 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor
 @SuperBuilder
 @Entity
 public class Calendar extends Resource {
