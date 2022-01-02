@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
@@ -33,6 +34,9 @@ public abstract class Resource {
     private String handle;
 
     private String comment;
+
+    @ManyToOne
+    private Personnel owner;
 
     @CreationTimestamp
     private LocalDateTime creationDate;

@@ -1,6 +1,6 @@
 package fr.blaze.model;
 
-import java.util.Date;
+import java.time.Duration;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -17,16 +17,20 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-public class Absence extends Resource {
+public class Course extends Resource {
+    private String title;
 
-    @ManyToOne
-    private AbsenceReason reason;
+    private Duration totalDuration;
 
-    private Date startDate;
+    private Duration sessionDuration;
 
-    private Date endDate;
+    private int weeklyCount;
 
     @ManyToOne
     @JsonBackReference
-    private User user;
+    private ActivityType activityType;
+
+    @ManyToOne
+    @JsonBackReference
+    private Component component;
 }
