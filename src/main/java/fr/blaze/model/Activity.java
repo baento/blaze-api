@@ -4,15 +4,17 @@ import java.time.Duration;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 @SuperBuilder
+@NoArgsConstructor
 @Entity
 public class Activity extends Resource {
     private boolean published;
@@ -20,7 +22,7 @@ public class Activity extends Resource {
     private Date startDate;
     private Date endDate;
 
-    @OneToOne
+    @ManyToOne
     private ActivityType type;
 
     public Duration getDuration() {

@@ -15,15 +15,17 @@ import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
 @MappedSuperclass
+@NoArgsConstructor
 public abstract class Resource {
     @Id
     @GeneratedValue
-    private final Integer id = 0;
+    private Long id;
 
     @NaturalId
     @NotNull

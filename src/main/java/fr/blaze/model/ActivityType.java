@@ -10,7 +10,10 @@ import lombok.experimental.SuperBuilder;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @SuperBuilder
+@NoArgsConstructor
 @Entity
 public class ActivityType extends Resource {
+    private String title;
+
     private String comment;
 }
